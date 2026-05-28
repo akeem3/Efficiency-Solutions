@@ -36,7 +36,8 @@ import { Switch } from '@/components/ui/switch';
 import { upsertBrandingProduct } from '../actions';
 import { BrandingProductSchema } from '../schemas';
 import type { BrandingProduct, BrandingCategory } from '@/generated/client';
-import { LuPlus, LuTrash2 } from 'react-icons/lu';
+import ImageUpload from '@/components/admin/ImageUpload';
+import { LuTrash2 } from 'react-icons/lu';
 import { cn } from '@/lib/utils';
 
 type ProductFormValues = z.infer<typeof BrandingProductSchema>;
@@ -214,21 +215,23 @@ export default function ProductFormModal({ product, categories, trigger }: Produ
               />
             </div>
 
-            <div className="space-y-3">
-              <FormLabel>Product Gallery (URLs)</FormLabel>
+            <div className="space-y-4">
+              <FormLabel>Product Gallery</FormLabel>
               {imageUrls.map((url, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input 
-                    placeholder="https://..." 
-                    value={url}
-                    onChange={(e) => handleImageUrlChange(index, e.target.value)}
-                  />
+                <div key={index} className="flex items-start gap-2">
+                  <div className="flex-1">
+                    <ImageUpload
+                      label={`Image ${index + 1}`}
+                      currentImage={url || undefined}
+                      onUploadSuccess={(newUrl) => handleImageUrlChange(index, newUrl)}
+                    />
+                  </div>
                   {imageUrls.length > 1 && (
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="icon" 
-                      className="shrink-0 text-destructive"
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="shrink-0 mt-7 text-destructive"
                       onClick={() => removeImageField(index)}
                     >
                       <LuTrash2 className="h-4 w-4" />
@@ -236,10 +239,10 @@ export default function ProductFormModal({ product, categories, trigger }: Produ
                   )}
                 </div>
               ))}
-              <Button 
-                type="button" 
-                variant="outline" 
-                size="sm" 
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
                 className="w-full border-dashed"
                 onClick={addImageField}
               >

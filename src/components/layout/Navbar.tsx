@@ -8,12 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
-import { env } from "@/env";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { useCart } from "@/hooks/useCart";
-import { Badge } from "@/components/ui/badge";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 const navItems = [
@@ -24,29 +22,19 @@ const navItems = [
 
 export const Navbar = () => {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { items } = useCart();
   const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   // Close mobile menu on route change or window resize
   useEffect(() => {
-    setMounted(true);
-    const handleRouteChange = () => {
-      setIsMobileMenuOpen(false);
-    };
-    window.addEventListener("resize", () => {
+    const onResize = () => {
       if (window.innerWidth > 768) {
         setIsMobileMenuOpen(false);
       }
-    });
-    return () => {
-      window.removeEventListener("resize", () => {
-        if (window.innerWidth > 768) {
-          setIsMobileMenuOpen(false);
-        }
-      });
     };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [pathname]);
 
   const toggleMobileMenu = () => {
@@ -196,7 +184,7 @@ export const Navbar = () => {
               aria-label="View Cart"
             >
               <LuShoppingCart className="h-5 w-5" />
-              {mounted && itemCount > 0 && (
+              {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-secondary text-[10px] font-bold text-white ring-2 ring-white transition-transform group-hover:scale-110">
                   {itemCount}
                 </span>
@@ -279,7 +267,7 @@ export const Navbar = () => {
               </div>
 
               {/* Drawer Body: Navigation Links */}
-              <div className="flex-grow overflow-y-auto p-6 space-y-4">
+              <div className="grow overflow-y-auto p-6 space-y-4">
                 {navItems.map((item) => {
                   if (item.name === "Services") {
                     return (
