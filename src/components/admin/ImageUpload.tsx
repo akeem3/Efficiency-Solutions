@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { LuUpload, LuX, LuLoader } from "react-icons/lu";
@@ -21,6 +21,7 @@ export default function ImageUpload({
   const [preview, setPreview] = useState<string | null>(
     currentImage || null,
   );
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -62,13 +63,17 @@ export default function ImageUpload({
     onUploadSuccess("");
   };
 
+  const handleChooseFile = () => {
+    inputRef.current?.click();
+  };
+
   return (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-foreground">
         {label}
       </label>
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-start gap-4">
         {preview ? (
           <div className="relative w-24 h-24 border rounded-[10px] overflow-hidden group shrink-0">
             <Image
@@ -80,7 +85,7 @@ export default function ImageUpload({
             <button
               onClick={handleRemove}
               type="button"
-              className="absolute top-1 right-1 p-1 bg-destructive text-destructive-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-1 right-1 p-1 bg-destructive text-destructive-foreground rounded-full opacity-60 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
             >
               <LuX className="w-3 h-3" />
             </button>
@@ -93,18 +98,20 @@ export default function ImageUpload({
 
         <div className="flex-1">
           <input
+            ref={inputRef}
             type="file"
-            id={`file-${label}`}
             className="hidden"
             accept="image/*"
             onChange={handleUpload}
             disabled={uploading}
           />
-          <label
-            htmlFor={`file-${label}`}
+          <button
+            type="button"
+            onClick={handleChooseFile}
+            disabled={uploading}
             className={cn(
               buttonVariants({ variant: "outline" }),
-              "cursor-pointer inline-flex items-center gap-2",
+              "inline-flex items-center gap-2 cursor-pointer",
             )}
           >
             {uploading ? (
@@ -115,7 +122,7 @@ export default function ImageUpload({
             ) : (
               "Choose File"
             )}
-          </label>
+          </button>
           <p className="mt-1 text-xs text-muted-foreground">
             PNG, JPG or WEBP. Max 5MB.
           </p>
