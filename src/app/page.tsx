@@ -82,7 +82,7 @@ export default function Home() {
             Excellence & Professionalism
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold font-heading text-brand-primary leading-[1.05] tracking-tight mb-8">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold font-heading text-brand-primary leading-[1.2] md:leading-[1.05] tracking-tight mb-8">
             Reliable Vendors. Quality Service. <br />
             <span className="text-brand-secondary">
               Exceptional Experience.
