@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons";
@@ -190,9 +189,9 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="w-20 h-1 bg-brand-secondary mx-auto mb-12" />
           <blockquote className="text-3xl md:text-5xl font-bold font-heading leading-tight mb-12 italic">
-            "Efficiency Solutions guarantees reliability, quality, and
+            &#34;Efficiency Solutions guarantees reliability, quality, and
             accountability — with vetted vendors and fully managed service
-            delivery."
+            delivery.&#34;
           </blockquote>
           <div className="flex flex-col items-center">
             <span className="text-brand-secondary font-bold font-heading uppercase tracking-widest mb-2">
